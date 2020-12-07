@@ -2,6 +2,7 @@
 # For more information on configuration, see:
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
+
 user nginx;
 
 #性能优化相关-------
@@ -10,10 +11,10 @@ worker_cpu_affinity 00001; #绑定cpu的指定核心，提高cpu缓存的命中�
 worker_priority [-20-19];  #指定worker进程的nice值，即优先级
 worker_rlimit_nofile 65535;  #指定worker子进程可以打开的文件最大数量
 #-------性能优化相关
-
 #调试相关------
 daemon on|off;  #是否以守护进程方式运行nignx，默认是守护进程方式.此选项用于实时调试
-error_log /var/log/nginx/error.log;  #错误日志文件及其级别；出于调试需要，可设定为debug；但debug仅在编译时使用了“--with-debug”选项时才有效
+error_log /var/log/nginx/error.log;  #错误日志文件及其级别；出于调试需要，可设定为debug；
+                                     但debug仅在编译时使用了“--with-debug”选项时才有效
 pid /run/nginx.pid;
 
 # Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
@@ -23,7 +24,9 @@ include /usr/share/nginx/modules/*.conf;
 events {
     worker_connections 1024;  #每个worker进程所能够打开的最大并发连接数数量
     use epoll;   #use method 指明并发连接请求的处理方法，默认自动选择最优方法epoll
-    accept_mutex on|off；#处理新的连接请求的方法；on指由各个worker轮流处理新请求，Off指每个新请求的到达都会通知（唤醒）所有的worker进程，但只有一个进程可获得连接，造成“惊 群”，影响性能
+    accept_mutex on|off；#处理新的连接请求的方法；on指由各个worker轮流处理新请求，
+                         Off指每个新请求的到达都会通知（唤醒）所有的worker进程，
+                         但只有一个进程可获得连接，造成“惊 群”，影响性能
 }
 
 http {
@@ -45,7 +48,8 @@ http {
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
-    include /etc/nginx/conf.d/*.conf;  #在/etc/nginx/conf.d/下的所有.conf都可以生效，即用户可以根据需要新建自定义conf文件
+    include /etc/nginx/conf.d/*.conf;  #在/etc/nginx/conf.d/下的所有.conf都可以生效，
+                                        即用户可以根据需要新建自定义conf文件
 
     #虚拟主机信息配置开始
     server {
